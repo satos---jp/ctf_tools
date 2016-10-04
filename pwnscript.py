@@ -3,17 +3,16 @@ from socket import *
 import time
 
 
-#sudo gdb -q -p `pidof -s villager` -x gdbcmd
-#socat TCP-L:10001,reuseaddr,fork EXEC:./villager
+#sudo gdb -q -p `pidof -s execfile` -x gdbcmd
+#socat TCP-L:10001,reuseaddr,fork EXEC:./execfile
 
 isgaibu = False
 isgaibu = True
 
 p = socket(AF_INET, SOCK_STREAM)
 if isgaibu:
-	p.connect(("ctfq.sweetduet.info", 10001))
+	p.connect(("gaibu.sa-ba-", 10001))
 	raw_input('gdb$')
-	print p.recv(1024)
 		
 else:
 	
@@ -43,6 +42,23 @@ def shell():
 		p.send(raw_input() + '\n')
 		print p.recv(1024)
 
+def getunt(c):
+	res = ""
+	while res=='' or res[-len(c):]!=c:
+		res += sock.recv(1)
+		#print res
+	print res
+	return res
 
+def send(s):
+	#print '[sending :: %s]' % s
+	sock.send(s)
+
+def getshellc(fn):
+	res = ""
+	with open(fn,'rb') as fp:
+		res = fp.read()
+	print map(ord,res)
+	return res
 
 
