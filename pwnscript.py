@@ -6,17 +6,19 @@ import time
 #sudo gdb -q -p `pidof -s execfile` -x gdbcmd
 #socat TCP-L:10001,reuseaddr,fork EXEC:./execfile
 
+#./../../tools/rp-lin-x86 -file=mylibc --rop=3 --unique > mygads.txt
+
+
 isgaibu = False
 isgaibu = True
 
-p = socket(AF_INET, SOCK_STREAM)
+sock = socket(AF_INET, SOCK_STREAM)
 if isgaibu:
-	p.connect(("gaibu.sa-ba-", 10001))
+	sock.connect(("gaibu.sa-ba-", 10001))
 	raw_input('gdb$')
 		
 else:
-	
-	p.connect(("localhost", 10001))
+	sock.connect(("localhost", 10001))
 	raw_input('gdb$')
 
 
@@ -39,8 +41,8 @@ def s2addr(s):
 	
 def shell():
 	while True:
-		p.send(raw_input() + '\n')
-		print p.recv(1024)
+		sock.send(raw_input() + '\n')
+		print sock.recv(1024)
 
 def getunt(c):
 	res = ""
