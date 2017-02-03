@@ -8,22 +8,6 @@ import time
 
 #./../../tools/rp-lin-x86 -file=mylibc --rop=3 --unique > mygads.txt
 
-
-isgaibu = False
-#isgaibu = True
-
-sock = socket(AF_INET, SOCK_STREAM)
-if isgaibu:
-	sock.connect(("gaibu.sa-ba-", 10001))
-	raw_input('gdb$')
-		
-else:
-	sock.connect(("localhost", 10001))
-	raw_input('gdb$')
-
-
-size_t = 0x4 #x64かx86か。sizeof(void*) の値で。
-
 def addr2s(x):
 	res = ""
 	for i in xrange(size_t):
@@ -106,4 +90,20 @@ class FSB:
 		#print len(sl.head)
 		#print s2hex(sl.head)
 		return res
+
+
+isgaibu = False
+#isgaibu = True
+
+sock = socket(AF_INET, SOCK_STREAM)
+if isgaibu:
+	sock.connect(("gaibu.sa-ba-", 10001))
+	raw_input('gdb$')
+		
+else:
+	sock.connect(("localhost", 10001))
+	raw_input('gdb$')
+
+size_t = 0x4 #x64かx86か。sizeof(void*) の値で。
+
 
