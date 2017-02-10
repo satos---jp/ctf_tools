@@ -3,11 +3,6 @@ from socket import *
 import time
 
 
-#sudo gdb -q -p `pidof -s execfile` -x gdbcmd
-#socat TCP-L:10001,reuseaddr,fork EXEC:./execfile
-
-#./../../tools/rp-lin-x86 -file=mylibc --rop=3 --unique > mygads.txt
-
 def addr2s(x):
 	res = ""
 	for i in xrange(size_t):
@@ -91,6 +86,10 @@ class FSB:
 		#print s2hex(sl.head)
 		return res
 
+#sudo gdb -q -p `pidof -s execfile` -x gdbcmd
+#socat TCP-L:10001,reuseaddr,fork EXEC:./execfile
+
+#./../../tools/rp-lin-x86 --file=mylibc --rop=3 --unique > mygads.txt
 
 isgaibu = False
 #isgaibu = True
